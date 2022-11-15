@@ -1,0 +1,17 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+<table border="1px">
+    <tr>
+        <th>Id</th>
+        <th>Mark</th>
+        <th>Date</th>
+    </tr>
+    @foreach (history h in ViewBag.History)
+    {
+        <tr>
+            <td>@h.historyId</td>
+            <td>@h.mark</td>
+            <td>@h.dateTime</td>
+        </tr>
+    }
+</table>

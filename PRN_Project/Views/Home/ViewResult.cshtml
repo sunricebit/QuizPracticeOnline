@@ -1,0 +1,239 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+@{
+    List<Quiz> quizzes = ViewBag.QuizSets;
+    List<QuizUserChoice> quizUserChoices = ViewBag.QuizUserChoices;
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #information {
+        display: block;
+        height: auto;
+        width: 580px;
+        position: relative;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+        #information #text {
+            font-size: 28px;
+            margin: 0 20px;
+            color: #0047b3;
+        }
+
+        #information #wrong-answer {
+            height: 50px;
+            width: 535px;
+            background: #ff5050;
+            line-height: 50px;
+            margin: 5px 15px;
+            border-radius: 5px;
+            color: #ffff;
+            font-size: 20px;
+        }
+
+        #information #correct-answer {
+            height: 50px;
+            width: 535px;
+            background: #00cc00;
+            line-height: 50px;
+            margin: 5px 15px;
+            border-radius: 5px;
+            color: #ffff;
+            font-size: 20px;
+        }
+
+        #information #button {
+            height: 40px;
+            width: 140px;
+            text-align: center;
+            background: #1a75ff;
+            color: #ffff;
+            border: 1px solid #b0c4d8;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 20px;
+        }
+
+            #information #button:hover {
+                background: #0047b3;
+            }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="information">
+        <div id="text"> Your sccore: @ViewBag.Result</div><br />
+        <a asp-action="QuizSetView" id="button" asp-controller="Home" style="text-decoration:none">Return Home</a><br />
+        @foreach (Quiz quiz in quizzes)
+        {
+            QuizUserChoice uquiz = quizUserChoices.FirstOrDefault(item => item.quizId == quiz.QuizId);
+            <h3 id="text">Question @(quizzes.IndexOf(quiz) + 1). @quiz.QuizDetail</h3>
+            <br />
+            @if (quiz.QuizType.Equals("Check"))
+            {
+
+                foreach (Answer a in quiz.Answers)
+                {
+                    if (uquiz != null)
+                    {
+                        bool check = false;
+                        if (uquiz.choice.Count > 0)
+                        {
+                            foreach (string s in uquiz.choice)
+                            {
+                                if (s == a.AnswerDetail)
+                                {
+                                    check = true;
+                                }
+                            }
+                        }
+                        @if (check)
+                        {
+                            if (a.Correct == true)
+                            {
+                                <span id="correct-answer">
+                                    <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled checked />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                            else
+                            {
+                                <span id="wrong-answer">
+                                    <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled checked />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                        }
+                        else
+                        {
+                            if (a.Correct == true)
+                            {
+                                <span id="correct-answer">
+                                    <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                            else
+                            {
+                                <span id="wrong-answer">
+                                    <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                        }
+                        <br />
+                    }
+                    else
+                    {
+                        if (a.Correct == true)
+                        {
+                            <span id="correct-answer">
+                                <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                            </span>
+                            <br />
+                        }
+                        else
+                        {
+                            <span id="wrong-answer">
+                                <input type="checkbox" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                            </span>
+                            <br />
+                        }
+                    }
+                }
+            }
+            @if (quiz.QuizType.Equals("Radio"))
+            {
+                foreach (Answer a in quiz.Answers)
+                {
+                    if (uquiz != null)
+                    {
+                        bool check = false;
+                        if (uquiz.choice.Count > 0)
+                        {
+                            foreach (string s in uquiz.choice)
+                            {
+                                if (s == a.AnswerDetail)
+                                {
+                                    check = true;
+                                }
+                            }
+                        }
+                        @if (check)
+                        {
+                            if (a.Correct == true)
+                            {
+                                <span id="correct-answer">
+                                    <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled checked />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                            else
+                            {
+                                <span id="wrong-answer">
+                                    <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled checked />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                        }
+                        else
+                        {
+                            if (a.Correct == true)
+                            {
+                                <span id="correct-answer">
+                                    <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                            else
+                            {
+                                <span id="wrong-answer">
+                                    <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                                </span>
+                                <br />
+                            }
+                        }
+                        <br />
+                    }
+                    else
+                    {
+                        if (a.Correct == true)
+                        {
+                            <span id="correct-answer">
+                                <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                            </span>
+                            <br />
+                        }
+                        else
+                        {
+                            <span id="wrong-answer">
+                                <input type="radio" id="input" value="@a.AnswerDetail" name="@a.AnswerId" disabled />@a.AnswerDetail
+                            </span>
+                            <br />
+                        }
+                    }
+                }
+            }
+        }
+    </div>
+</body>
+</html>

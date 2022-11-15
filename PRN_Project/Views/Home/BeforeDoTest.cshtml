@@ -1,0 +1,90 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+@{
+    QuizSet q = ViewBag.QuizSet;
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #container {
+        height: auto;
+        width: auto;
+    }
+
+    #practiceButton {
+        height: 70px;
+        width: 250px;
+        text-align: center;
+        padding: 20px 0;
+        background: #ffff;
+        color: #000;
+        font-size: 23px;
+        border: 2px solid #b0c4d8;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #practiceButton:hover {
+            background: #1a75ff;
+            color: #ffff;
+        }
+
+    #button {
+        display: flex;
+    }
+
+
+    #information {
+        height: auto;
+        width: 580px;
+        padding: 20px;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+        #information h3 {
+            color: #0047b3;
+            font-size: 35px;
+        }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="container">
+        <div id="information">
+            @if (@q.Score != null)
+            {
+                <h3>Your lastest mark of this test: @q.Score</h3>
+            }
+            else
+            {
+                <h3>You have never taken this test</h3>
+            }
+            <form asp-action="Practice" asp-controller="Home" method="get">
+                <input type="text" name="remainTime" style="display:none" value="@ViewBag.Time">
+                <input type="text" name="next" style="display:none" value="@ViewBag.IndexInList">
+                <div id="button">
+                    <a id="practiceButton" style="text-decoration:none" asp-action="QuizSetView" asp-controller="Home">Back</a>
+                    <input type="submit" id="practiceButton" value="Practice Test" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

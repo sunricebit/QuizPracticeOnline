@@ -1,0 +1,62 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #information {
+        height: auto;
+        width: 300px;
+        padding: 20px;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+    #aButton {
+        height: 70px;
+        width: 250px;
+        text-align: center;
+        padding: 20px 0;
+        background: #ffff;
+        color: #000;
+        font-size: 23px;
+        border: 2px solid #b0c4d8;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #aButton:hover {
+            background: #1a75ff;
+            color: #ffff;
+        }
+
+    #button {
+        display: flex;
+    }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="information">
+        <div id="button">
+            <!--<a id="aButton" style="text-decoration:none; display:none;">Tạo học phần mới</a>-->
+            <a id ="aButton" asp-action="QuizSetView" asp-controller="Home" style="text-decoration:none">Học phần của bạn</a>
+        </div>
+    </div>
+</body>
+</html>

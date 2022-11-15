@@ -1,0 +1,139 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+@{
+    List<QuizUserChoice> quizUserChoices = ViewBag.AnswerSubmited;
+    List<Quiz> quizzes = ViewBag.QuizSets;
+    bool answer = false;
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+
+    #button {
+        height: 40px;
+        width: 150px;
+        display: grid;
+        place-items: center;
+        background: #1a75ff;
+        position: absolute;
+        right: 0;
+        color: #ffff;
+        border: 1px solid #b0c4d8;
+        font-size: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0 20px;
+        flex-direction: row;
+    }
+
+        #button:hover {
+            background: #0047b3;
+        }
+
+
+    #information {
+        display: block;
+        height: 550px;
+        width: 550px;
+        padding: 20px;
+        position: relative;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+        #information #footer {
+            height: 60px;
+            width: 100%;
+            background: #ffff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            border-radius: 5px;
+        }
+    #table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #table td, #table th {
+            border: 1px solid #b0c4d8;
+            padding: 8px;
+        }
+
+        #table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #table tr:hover {
+            background-color: #b0c4d8;
+        }
+
+        #table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #1a75ff;
+            color: #ffff;
+        }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="information">
+        <table id="table">
+            <tr>
+                <th>Quiz</th>
+                <th>Status</th>
+            </tr>
+            @foreach (Quiz quiz in quizzes)
+            {
+                answer = false;
+                <tr>
+                    <td>
+                        Question: @(quizzes.IndexOf(quiz) + 1)
+                    </td>
+                    @foreach (QuizUserChoice uquiz in quizUserChoices)
+                    {
+                        @if (uquiz.quizId == quiz.QuizId && uquiz.choice.Count > 0)
+                        {
+                            answer = true;
+                            break;
+                        }
+                    }
+                    @if (answer)
+                    {
+                        <td>Answer saved</td>
+                    }
+                    else
+                    {
+                        <td>Not yet answered</td>
+                    }
+                </tr>
+            }
+        </table>
+        <div id="footer">
+        <a id="button" asp-action="ViewResult" asp-controller="Home" style="text-decoration:none">View Result</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+<form asp-action="Practice" asp-controller="Home" method="get">
+    <input type="text" name="remainTime" value="" id="remainTime" style="display:none">
+    <input type="text" name="next" style="display:none" value="@ViewBag.IndexInList">
+    Please enter time:<br />
+    Hour: <input type="text" id="hour"><br />
+    Minute: <input type="text" id="minute"><br />
+    Second: <input type="text" id="second"><br />
+    <div id="button">
+        <input onclick ="getTime()" type="submit" id="practiceButton" value="Practice Test" />
+    </div>
+</form>
+<script>
+    function getTime() {
+        var hour = parseInt(document.getElementById("hour").value);
+        var minute = parseInt(document.getElementById("minute").value);
+        var second = parseInt(document.getElementById("second").value);
+        var time = hour * 3600 + minute * 60 + second;
+        document.getElementById("remainTime").value = time;
+    }
+</script>

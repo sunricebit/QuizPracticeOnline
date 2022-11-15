@@ -1,0 +1,85 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+@{
+    int i = 1;
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #information {
+        display: block;
+        height: auto;
+        width: 580px;
+        position: relative;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+        #information h3 {
+            font-size: 28px;
+            margin: 0 20px;
+            color: #0047b3;
+        }
+
+        #information #wrong-answer {
+            height: 50px;
+            width: 535px;
+            background: #ff5050;
+            line-height: 50px;
+            margin: 5px 15px;
+            border-radius: 5px;
+            color: #ffff;
+            font-size: 20px;
+        }
+
+        #information #correct-answer {
+            height: 50px;
+            width: 535px;
+            background: #00cc00;
+            line-height: 50px;
+            margin: 5px 15px;
+            border-radius: 5px;
+            color: #ffff;
+            font-size: 20px;
+        }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="information">
+        @foreach (Quiz q in ViewBag.QuizSets)
+        {
+            <h3>Question @i. @q.QuizDetail</h3>
+            @foreach (Answer a in q.Answers)
+            {
+                @if (@a.Correct == true)
+                {
+                    <h4 id="correct-answer">@a.AnswerDetail</h4>
+                }
+                else
+                {
+                    <h4 id="wrong-answer">@a.AnswerDetail</h4>
+                }
+                <br />
+            }
+            i++;
+        }
+    </div>
+</body>
+</html>

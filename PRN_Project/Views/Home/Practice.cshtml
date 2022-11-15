@@ -1,0 +1,362 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+@{
+    Quiz quiz = ViewBag.Question;
+    QuizUserChoice lastChoice = ViewBag.Choosen;
+    bool check = true;
+    if (lastChoice == null)
+    {
+        check = false;
+    }
+    else
+    {
+        if (lastChoice.choice.Count == 0)
+        {
+            check = false;
+        }
+    }
+}
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #container {
+        height: auto;
+        width: auto;
+    }
+
+    #information {
+        display: block;
+        height: 550px;
+        width: 580px;
+        position: relative;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+        #information #quiz_header {
+            height: 60px;
+            width: 100%;
+            background: #ffff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            border-radius: 5px;
+        }
+
+            #information #quiz_header h5 {
+                font-size: 28px;
+                margin: 0 20px;
+                color: #0047b3;
+            }
+
+            #information #quiz_header #clock {
+                height: 50px;
+                width: 300px;
+                background: #1a75ff;
+                color: #ffff;
+                border: 1px solid #b0c4d8;
+                border-radius: 5px;
+                font-size: 18px;
+                display: flex;
+                flex-direction: row;
+                position: absolute;
+                right: 10px;
+            }
+
+                #information #quiz_header #clock h6 {
+                    font-size: 22px;
+                    display: grid;
+                    place-items: center;
+                    color: #fff;
+                    margin: 0 10px;
+                }
+
+                #information #quiz_header #clock #timeRemain {
+                    height: 44px;
+                    width: 100px;
+                    background: #fff;
+                    color: #0047b3;
+                    border: 1px solid #b0c4d8;
+                    border-radius: 5px;
+                    margin: 2px 0 0 27px;
+                }
+
+        #information #question {
+            position: absolute;
+            top: 90px;
+            display: flex;
+            flex-direction: row;
+            left: 15px;
+        }
+
+            #information #question h2 {
+                font-size: 27px;
+            }
+
+                #information #question h2:first-child {
+                    margin: 0 10px 0 5px;
+                }
+
+        #information #optionList {
+            height: auto;
+            width: 100%;
+            position: absolute;
+            top: 160px;
+        }
+
+            #information #optionList #answer {
+                height: 50px;
+                width: 535px;
+                background: #1a75ff;
+                line-height: 50px;
+                margin: 5px 15px;
+                border-radius: 5px;
+                color: #ffff;
+                font-size: 20px;
+            }
+
+                #information #optionList #answer:hover {
+                    background: #0047b3;
+                }
+
+        #information #answerSection {
+            height: 60px;
+            width: 100%;
+            background: #ffff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            border-radius: 5px;
+        }
+
+            #information #answerSection #submit {
+                height: 40px;
+                width: 150px;
+                display: grid;
+                place-items: center;
+                background: #1a75ff;
+                position: absolute;
+                right: 0;
+                color: #ffff;
+                border: 1px solid #b0c4d8;
+                font-size: 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 0 20px;
+            }
+
+                #information #answerSection #submit:hover {
+                    background: #0047b3;
+                }
+
+            #information #answerSection #nextQuestion {
+                height: 40px;
+                width: 100px;
+                display: grid;
+                place-items: center;
+                background: #1a75ff;
+                position: absolute;
+                right: 160px;
+                color: #ffff;
+                border: 1px solid #b0c4d8;
+                font-size: 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 0 20px;
+            }
+
+                #information #answerSection #nextQuestion:hover {
+                    background: #0047b3;
+                }
+
+            #information #answerSection #listQuiz {
+                display: flex;
+            }
+
+                #information #answerSection #listQuiz #toQuestion {
+                    background: #1a75ff;
+                    height: 40px;
+                    width: 40px;
+                    border: 1px solid #b0c4d8;
+                    color: #ffff;
+                    font-size: 20px;
+                    border-radius: 5px;
+                }
+
+                    #information #answerSection #listQuiz #toQuestion:hover {
+                        background: #0047b3;
+                    }
+
+    #input {
+        height: 20px;
+        width: 20px;
+    }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="container">
+        <div id="information">
+            <form asp-action="Practice" asp-controller="Home" method="get">
+                <div id="currentTime" style="display:none" name="currentTime">@ViewBag.Time</div>
+                <input type="text" style="display:none" id="remainTime" name="remainTime">
+                <div id="quiz_header">
+                    <h5>Practice Online</h5>
+                    <div id="clock">
+                        <h6>Time remaining</h6>
+                        <h6 id="timeRemain"></h6>
+                    </div>
+                </div>
+                <input type="text" style="display:none" value="@ViewBag.Next" name="next" />
+                <input type="text" style="display:none" value="@quiz.QuizId" name="quizId" />
+                <div id="question">
+                    <h2 id="questionNo">@ViewBag.IndexInList.</h2>
+                    <h2 id="questionText">@quiz.QuizDetail</h2><br />
+                </div>
+                <div id="optionList">
+                    @if (check == false)
+                    {
+                        @if (quiz.QuizType.Equals("Check"))
+                        {
+                            foreach (Answer a in quiz.Answers)
+                            {
+                                <div id="answer">
+                                    <input type="checkbox" id="input" value="@a.AnswerDetail" name="choice" />
+                                    @a.AnswerDetail
+                                </div>
+                                <br />
+                            }
+                        }
+                        @if (quiz.QuizType.Equals("Radio"))
+                        {
+                            foreach (Answer a in quiz.Answers)
+                            {
+                                <div id="answer">
+                                    <input type="radio" id="input" value="@a.AnswerDetail" name="choice" />
+                                    @a.AnswerDetail
+                                </div>
+                                <br />
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        @if (quiz.QuizType.Equals("Check"))
+                        {
+                            foreach (Answer a in quiz.Answers)
+                            {
+                                bool checkboxChecked = false;
+                                foreach (string s in lastChoice.choice)
+                                {
+                                    if (s == a.AnswerDetail)
+                                    {
+                                        checkboxChecked = true;
+                                        break;
+                                    }
+                                }
+                                if (checkboxChecked)
+                                {
+                                    <div id="answer">
+                                        <input type="checkbox" id="input" value="@a.AnswerDetail" name="choice" checked />
+                                        @a.AnswerDetail
+                                    </div>
+                                    <br />
+                                }
+                                else
+                                {
+                                    <div id="answer">
+                                        <input type="checkbox" id="input" value="@a.AnswerDetail" name="choice" />
+                                        @a.AnswerDetail
+                                    </div>
+                                    <br />
+                                }
+                            }
+                        }
+                        @if (quiz.QuizType.Equals("Radio"))
+                        {
+                            foreach (Answer a in quiz.Answers)
+                            {
+                                foreach (string s in lastChoice.choice)
+                                {
+                                    if (s == a.AnswerDetail)
+                                    {
+                                        <div id="answer">
+                                            <input type="radio" id="input" value="@a.AnswerDetail" name="choice" checked />
+                                            @a.AnswerDetail
+                                        </div>
+                                        <br />
+                                    }
+                                    else
+                                    {
+                                        <div id="answer">
+                                            <input type="radio" id="input" value="@a.AnswerDetail" name="choice" />
+                                            @a.AnswerDetail
+                                        </div>
+                                        <br />
+                                    }
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <div id="answerSection">
+                    <div id="listQuiz">
+                        @for (int i = 1; i <= ViewBag.NumOfQuestion; i++)
+                        {
+                            <input type="submit" id="toQuestion" value="@i" name="toQuestion" />
+                        }
+                    </div>
+                    @if (@ViewBag.NumOfQuestion != ViewBag.IndexInList)
+                    {
+                        <input type="submit" id="nextQuestion" value="Next" name="submit" />
+                    }else{
+                        <input type="submit" id="submit" value="Submit Answer" name="submit" />
+                    }
+                    
+                </div>
+            </form>
+            <script>
+                var time = parseInt(document.getElementById("currentTime").innerHTML);
+                var buttonSubmit = document.getElementById("submit");
+                function countDown() {
+                    time--;
+                    if (time > 0) {
+                        var hour = Math.floor(time / 3600);
+                        var minute = Math.floor((time % 3600) / 60);
+                        var second = (time % 3600) % 60;
+                        document.getElementById("timeRemain").innerHTML = hour + " : " + minute + " : " + second;
+                        document.getElementById("remainTime").value = time;
+                        setTimeout("countDown()", 1000);
+                    } else {
+                        buttonSubmit.click();
+                    }
+                }
+                countDown();
+            </script>
+        </div>
+    </div>
+</body>
+</html>

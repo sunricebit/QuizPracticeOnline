@@ -1,0 +1,79 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using PRN_Project.Models
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+    }
+
+    body {
+        display: grid;
+        place-items: center;
+        height: 100vh;
+        background: #1a75ff;
+    }
+
+    #information {
+        height: auto;
+        width: 580px;
+        padding: 20px;
+        background: #ffff;
+        border: 1px solid #b0c4d8;
+        border-radius: 5px;
+    }
+
+    #table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #table td, #table th {
+            border: 1px solid #b0c4d8;
+            padding: 8px;
+        }
+
+        #table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #table tr:hover {
+            background-color: #b0c4d8;
+        }
+
+        #table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #1a75ff;
+            color: #ffff;
+        }
+</style>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Practice Online</title>
+</head>
+<body>
+    <div id="information">
+        <table id="table">
+            <tr>
+                <th>Title</th>
+                <th>View Question</th>
+                <th>Modify</th>
+            </tr>
+            @foreach (QuizSet q in ViewBag.QuizSets)
+            {
+                <tr>
+                    <td><a asp-action="BeforeDoTest" asp-controller="Home" asp-route-quizsetId="@q.QuizsetId" style="text-decoration:none">@q.QuizsetTitle</a></td>
+                    <td><a asp-action="ViewQuizSet" asp-controller="Home" asp-route-id="@q.QuizsetId" style="text-decoration:none">View Question</a></td>
+                    <td>Modify</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</body>
+</html>
